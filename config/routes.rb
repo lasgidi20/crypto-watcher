@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
-  get 'articles/index'
-  devise_for :users,
-             controllers: {
-               sessions: 'users/sessions',
-               registrations: 'users/registrations'
-             }
+  get '/current-user', to: 'current_user#index'
+  
+  devise_for :users, path: '', path_names: {
+    sign_in: 'login',
+    sign_out: 'logout',
+    registration: 'signup'
+  },
+  controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
+  get '/trending-coins', to: 'coins#fetch_trending_coins'
+  get '/coin-list', to: 'coins#listed_coins'
   get '/articles', to: 'articles#index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  get '/coin/:id', to: 'coins#find_specific_coin'
+  get '/history', to: 'coins#retrieve_historical_data'
 end
