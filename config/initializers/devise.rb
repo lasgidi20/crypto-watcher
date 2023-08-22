@@ -118,7 +118,14 @@ Devise.setup do |config|
   # with the hashed password. This allows you to change the stretches without
   # invalidating existing passwords.
   config.jwt do |jwt|
-    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.secret = Rails.application.credentials.fetch(:secret_key_base)
+    jwt.dispatch_requests = [
+      ['POST', %r{^/login$}]
+    ]
+    jwt.revocation_requests = [
+      ['DELETE', %r{^/logout$}]
+    ]
+    jwt.expiration_time = 10.minutes.to_i
   end
   # Limiting the stretches to just one in testing will increase the performance of
   # your test suite dramatically. However, it is STRONGLY RECOMMENDED to not use
@@ -255,7 +262,7 @@ Devise.setup do |config|
   # Set this configuration to false if you want /users/sign_out to sign out
   # only the current scope. By default, Devise signs out all scopes.
   # config.sign_out_all_scopes = true
-
+  config.navigational_formats = []
   # ==> Navigation configuration
   # Lists the formats that should be treated as navigational. Formats like
   # :html should redirect to the sign in page when the user does not have
@@ -265,7 +272,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html, :turbo_stream]
+
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
