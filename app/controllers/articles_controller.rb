@@ -10,8 +10,6 @@ class ArticlesController < ApplicationController
     @article  = Artice.create(article_parmas)
   end
 
-
-
   def article_parmas
     params.require(:article). permit(:title, :body, :user_id)
   end
