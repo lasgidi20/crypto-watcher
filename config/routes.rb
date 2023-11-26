@@ -10,9 +10,13 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  get '/trending-coins', to: 'coins#fetch_trending_coins'
-  get '/coin-list', to: 'coins#listed_coins'
-  get '/articles', to: 'articles#index'
-  get '/coin/:id', to: 'coins#find_specific_coin'
-  get '/history', to: 'coins#retrieve_historical_data'
+
+  namespace :api do
+    get '/trending-coins', to: 'coins#fetch_trending_coins'
+    get '/coin-list', to: 'coins#listed_coins'
+    get '/articles', to: 'articles#index'
+    get '/coin/:id', to: 'coins#find_specific_coin'
+    get '/history', to: 'coins#retrieve_historical_data'
+  end
 end
+
